@@ -4,12 +4,16 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import HomePage from "./screens/HomePage";
 import UserPage from "./screens/User";
+import { NativeWindStyleSheet } from "nativewind";
 
+NativeWindStyleSheet.setOutput({
+  default: "native",
+});
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="user">
+      <Stack.Navigator initialRouteName="home">
         <Stack.Screen
           name="home"
           component={HomePage}

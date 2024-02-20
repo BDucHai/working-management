@@ -12,7 +12,6 @@
 
 ### Run
 
-> npm install
-> npm run android
+> npm install && npm run android
 
 ### Commit
