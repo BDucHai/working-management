@@ -3,6 +3,7 @@
     "name": "working-management",
     "slug": "working-management",
     "version": "1.0.0",
+    "scheme": "working-management-scheme",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,6 +26,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
