@@ -5,8 +5,8 @@ import { User } from "../../types/user.type";
 const Header = ({ user }: { user: User }) => {
   return (
     <>
-      <View className="h-1/4 bg-primary flex justify-center items-center">
-        <View className="flex flex-row  gap-32">
+      <View className="h-1/4 bg-primary flex justify-center  ">
+        <View className="flex-row items-center justify-between px-10">
           <View className="space-y-2">
             <Text className="text-2xl text-white font-bold  ">
               Hi, {user.name || "Guest"}
@@ -14,11 +14,14 @@ const Header = ({ user }: { user: User }) => {
             <Text className="text-white font-light">Let's start working</Text>
           </View>
           <View>
-            <Image
-              source={require("./../../assets/img/Avatar.png")}
-              width={50}
-              height={50}
-            />
+            {user.name && (
+              <View className="justify-center">
+                <Image
+                  source={require("./../../assets/img/scence.jpg")}
+                  className="w-[50px] h-[50px] rounded-full object-top"
+                />
+              </View>
+            )}
           </View>
         </View>
       </View>

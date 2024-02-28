@@ -1,14 +1,13 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 import { Root } from "../navigation/types";
+import UserHeader from "../components/userProfile/userHeader";
+import UserInfor from "../components/userProfile/userInfor";
 
 const UserPage = ({ navigation }: Root) => {
   return (
-    <View className="flex-1 justify-center items-center">
-      <Text className="text-red-600">User Page</Text>
-      <Button
-        title="Login"
-        onPress={() => navigation.navigate("User", { screen: "Login" })}
-      />
+    <View className="flex-1 bg-slate-300 ">
+      <UserHeader />
+      <UserInfor />
     </View>
   );
 };

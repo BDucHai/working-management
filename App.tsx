@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginPage from "./screens/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList, UserStackParamList } from "./navigation/types";
+import SignupPage from "./screens/Signup";
 
 // export props to use in page
 // export type Props = BottomTabScreenProps<RootStackParamList>;
@@ -22,16 +23,21 @@ function User() {
   return (
     <UserTab.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Todo"
+      initialRouteName={false ? "Login" : "UserProfile"}
     >
       <UserTab.Screen
-        name="Todo"
+        name="UserProfile"
         component={UserPage}
         options={{ headerShown: false }}
       />
       <UserTab.Screen
         name="Login"
         component={LoginPage}
+        options={{ headerShown: false }}
+      />
+      <UserTab.Screen
+        name="Signin"
+        component={SignupPage}
         options={{ headerShown: false }}
       />
     </UserTab.Navigator>
