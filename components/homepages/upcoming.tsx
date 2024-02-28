@@ -4,26 +4,23 @@ import { FlatList, Text, View } from "react-native";
 interface JobDue {
     name: string;
     time: number;
-    project: String;
 }
 export default function Upcomming() {
     const jobDue: JobDue[] = [
-        { name: "Promgramming", time: 30, project: "P1" },
+        { name: "Promgramming", time: 30 },
         {
             name: "Code front-end ",
             time: 120,
-            project: "P2",
         },
         {
             name: "Code front-end ",
             time: 300,
-            project: "P3",
         },
     ];
     return (
-        <View className="mt-4 w-full h-70">
+        <View className="mt-4 w-full h-[240px]">
             <Text className="font-bold text-gray-700 text-lg">Job Due</Text>
-            <View className="pl-4 pt-2 w-full bg-[#c3c3c3] rounded-[4px]">
+            {/* <View className="pl-4 pt-2 w-full bg-[#c3c3c3] rounded-[4px]">
                 <View className="flex flex-row mb-4 gap-x-4 items-center">
                     <View className="flex flex-row items-center gap-2 mr-[40px] justify-self-start">
                         <AntDesign name="clockcircleo" size={16} color="black" />
@@ -38,7 +35,7 @@ export default function Upcomming() {
                         </View>
                     </View>
                 </View>
-            </View>
+            </View> */}
             <FlatList
                 className="pl-4 py-2 w-full"
                 data={jobDue}
@@ -53,11 +50,6 @@ export default function Upcomming() {
                             </View>
                             <View className="flex-1 justify-self-center">
                                 <Text className="opacity-60 ">about {item.time} minutes</Text>
-                            </View>
-                            <View>
-                                <View className="flex-1 mr-[20px] justify-self-end">
-                                    <Text className="opacity-60 ">{item.project}</Text>
-                                </View>
                             </View>
                         </View>
                     );
