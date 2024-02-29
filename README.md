@@ -14,6 +14,10 @@
 
 ### Run
 
-> npm install && npm run android
+> npm install && npm
+
+### After pull
+
+> npx expo start -c
 
 ### Commit

@@ -8,7 +8,10 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@expo/vector-icons": "^14.0.0",
+    "@mui/material": "^5.15.11",
     "@react-navigation/bottom-tabs": "^6.5.12",
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/native-stack": "^6.9.18",

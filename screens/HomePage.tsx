@@ -4,9 +4,8 @@ import SlideShow from "../components/homepages/slideshow";
 import Meeting from "../components/homepages/meeting";
 import Upcomming from "../components/homepages/upcoming";
 import { User } from "../types/user.type";
-import { Root } from "../navigation/types";
 
-const HomePage = ({ navigation }: Root) => {
+const HomePage = () => {
   const user: User = {
     name: undefined,
     image: undefined,

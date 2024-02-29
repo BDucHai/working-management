@@ -6,17 +6,19 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type UserStackParamList = {
-  UserProfile: undefined;
-  Login: undefined;
-  Signin: undefined;
+    Todo: undefined;
+    Login: undefined;
+    UserProfile: undefined;
+  };
+  export type ProjectStackParamList = {
+    List: undefined;
 };
+  export type RootStackParamList = {
+    Home: undefined;
+    User: NavigatorScreenParams<UserStackParamList>;
+  };
 
-export type RootStackParamList = {
-  Home: undefined;
-  User: NavigatorScreenParams<UserStackParamList>;
-};
-
-export type Root = CompositeScreenProps<
+  export type Root = CompositeScreenProps<
   BottomTabScreenProps<RootStackParamList>,
-  NativeStackScreenProps<UserStackParamList>
+  CompositeScreenProps<NativeStackScreenProps<UserStackParamList>, NativeStackScreenProps<ProjectStackParamList>>
 >;

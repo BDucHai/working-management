@@ -8,8 +8,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import LoginPage from "./screens/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RootStackParamList, UserStackParamList } from "./navigation/types";
+import {
+  ProjectStackParamList,
+  RootStackParamList,
+  UserStackParamList,
+} from "./navigation/types";
 import SignupPage from "./screens/Signup";
+import ProjectPage from "./screens/ProjectPage";
 
 // export props to use in page
 // export type Props = BottomTabScreenProps<RootStackParamList>;
@@ -18,6 +23,7 @@ import SignupPage from "./screens/Signup";
 // create stack : bottom stack and native stack
 const Tab = createBottomTabNavigator<RootStackParamList>();
 const UserTab = createNativeStackNavigator<UserStackParamList>();
+const ProjectTab = createNativeStackNavigator<ProjectStackParamList>();
 
 function User() {
   return (
@@ -43,6 +49,19 @@ function User() {
     </UserTab.Navigator>
   );
 }
+
+function Project() {
+  return (
+    <ProjectTab.Navigator initialRouteName="List">
+      <ProjectTab.Screen
+        name="List"
+        component={ProjectPage}
+        options={{ headerShown: false }}
+      />
+    </ProjectTab.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -63,6 +82,12 @@ export default function App() {
                 ) : (
                   <Feather name="user" size={24} color="black" />
                 );
+              case "Project":
+                return focused ? (
+                  <Entypo name="book" size={24} color="#3D5CFF" />
+                ) : (
+                  <Feather name="book" size={24} color="black" />
+                );
               default:
                 return;
             }
@@ -79,6 +104,11 @@ export default function App() {
         <Tab.Screen
           name="User"
           component={User}
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen
+          name="Project"
+          component={Project}
           options={{ headerShown: false }}
         />
       </Tab.Navigator>
