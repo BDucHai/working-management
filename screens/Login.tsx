@@ -1,17 +1,10 @@
-import {
-  Text,
-  View,
-  TextInput,
-  Button,
-  Alert,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, TextInput, TouchableOpacity } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Image } from "react-native";
 import { Root } from "../navigation/types";
-import { useNavigation } from "@react-navigation/native";
+import InputFeild from "../components/input";
 
-interface Data {
+interface UserLogin {
   email: string;
   password: string;
 }
@@ -27,7 +20,7 @@ export default function LoginPage({ navigation }: Root) {
       password: "",
     },
   });
-  const onSubmit = (data: Data) => {
+  const onSubmit = (data: UserLogin) => {
     console.log(data);
     navigation.navigate("Home");
   };
@@ -41,67 +34,47 @@ export default function LoginPage({ navigation }: Root) {
         />
       </View>
       <Text className="font-semibold text-[25px] mb-4">
-        Sign-in to your account
+        Login to your account
       </Text>
       <View>
-        <Controller
+        <InputFeild
           control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View>
-              <Text className="block text-md font-semibold text-gray-400 mb-2 ">
-                Your Email
-              </Text>
-              <TextInput
-                placeholder="jane@gmaill.com"
-                className="border-gray-500 border-2 px-4 py-2 rounded-lg opacity-60 focus:border-primary"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            </View>
-          )}
           name="email"
+          placeholder="johnsmith@gmail.com"
+          title="Email address"
         />
         {errors.email && (
           <Text className="text-red-600 mt-2">Please provide your email</Text>
         )}
-        <Controller
+        <InputFeild
           control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View className="mt-4">
-              <Text className="block text-md font-semibold text-gray-400 mb-2 ">
-                Password
-              </Text>
-              <TextInput
-                secureTextEntry={true}
-                placeholder="*****"
-                className="border-gray-500 border-2 px-4 py-2 rounded-lg opacity-60 focus:border-primary"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            </View>
-          )}
           name="password"
+          placeholder="*****"
+          title="Password"
         />
         {errors.password && (
           <Text className="text-red-600 mt-2">
             Please provide your password
           </Text>
         )}
-        <View className="mt-6 flex items-center ">
+        <View className="flex items-end px-4 mt-2">
+          <Text className="text-blue-400">Forgot your password?</Text>
+        </View>
+        <View className="mt-6 flex items-center space-y-5">
           <TouchableOpacity
-            className="w-1/4 rounded-lg bg-primary flex justify-center items-center px-4 py-4"
+            className="w-full rounded-lg bg-primary flex justify-center items-center px-4 py-4"
             onPress={handleSubmit(onSubmit)}
           >
             <Text className="text-white text-base font-semibold">Login</Text>
           </TouchableOpacity>
+          <View className="flex flex-row gap-x-2">
+            <Text>You don't have account?</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("User", { screen: "Signin" })}
+            >
+              <Text className="text-primary">Sign-up </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>

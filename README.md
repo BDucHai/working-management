@@ -4,7 +4,9 @@
 
 - React Native
 - Expo && [React Navigation](https://reactnavigation.org/docs/getting-started)
+- [React Hook Form](https://react-hook-form.com/get-started#ReactNative)
 - [Nativewind](https://www.nativewind.dev/)
+- [Expo Icon](https://icons.expo.fyi/Index)
 
 ### Install
 
@@ -12,6 +14,10 @@
 
 ### Run
 
-> npm install && npm run android
+> npm install && npm
+
+### After pull
+
+> npx expo start -c
 
 ### Commit
