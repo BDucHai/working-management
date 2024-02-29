@@ -1,5 +1,4 @@
 import { View, Text, FlatList, TextInput } from "react-native";
-import { LinearProgress } from "@mui/material";
 import { useNavigation } from "@react-navigation/native";
 import ProjectTab from "../components/projects/ProjectTab";
 import { MyProject } from "../types/projectTab.type";
@@ -11,18 +10,22 @@ const myProject: MyProject[] = [
     {
         name: "Create Web App",
         member: 12,
+        progress: 0.5,
     },
     {
         name: "Create Banking app",
         member: 5,
+        progress: 0.8,
     },
     {
         name: "Create Heath Take Care",
         member: 16,
+        progress: 0.3,
     },
     {
         name: "Create Bakery",
         member: 5,
+        progress: 0.7,
     },
 ];
 export default function ProjectPage() {
@@ -31,10 +34,10 @@ export default function ProjectPage() {
     return (
         <View className="bg-white">
             <Text className="mt-[70px] text-center font-bold text-[26px]">My Projects</Text>
-            <View className="mt-[20px] px-[20px] flex-row justify-end">
-                <MaterialCommunityIcons name="clipboard-plus-outline" size={40} color="black" />
+            <View className="mt-[10px] px-[20px] flex-row justify-end">
+                <MaterialCommunityIcons name="clipboard-plus-outline" size={30} color="black" />
             </View>
-            <SafeAreaView className="flex flex-row justify-between px-[12px] w-full mt-[-30px]">
+            <SafeAreaView className="flex flex-row justify-between px-[12px] w-full mt-[-38px]">
                 <TextInput
                     className="border-2 rounded-[6px] w-[75%] px-[8px] py-[6px] "
                     onChangeText={onChangeFind}

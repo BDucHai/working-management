@@ -12,11 +12,13 @@ export type UserStackParamList = {
   };
   export type ProjectStackParamList = {
     List: undefined;
+    DetailProjectPage: undefined;
 };
   export type RootStackParamList = {
     Home: undefined;
     User: NavigatorScreenParams<UserStackParamList>;
     Project: NavigatorScreenParams<ProjectStackParamList>;
+    DetailProjectPage: NavigatorScreenParams<ProjectStackParamList>;
 };
 
 
