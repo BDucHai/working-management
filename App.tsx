@@ -8,12 +8,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import LoginPage from "./screens/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import {
   ProjectStackParamList,
   RootStackParamList,
   UserStackParamList,
 } from "./navigation/types";
 import SignupPage from "./screens/Signup";
+
 import ProjectPage from "./screens/ProjectPage";
 
 // export props to use in page
@@ -26,6 +28,7 @@ const UserTab = createNativeStackNavigator<UserStackParamList>();
 const ProjectTab = createNativeStackNavigator<ProjectStackParamList>();
 
 function User() {
+
   return (
     <UserTab.Navigator
       screenOptions={{ headerShown: false }}
@@ -114,4 +117,5 @@ export default function App() {
       </Tab.Navigator>
     </NavigationContainer>
   );
+
 }

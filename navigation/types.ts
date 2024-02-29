@@ -16,9 +16,11 @@ export type UserStackParamList = {
   export type RootStackParamList = {
     Home: undefined;
     User: NavigatorScreenParams<UserStackParamList>;
-  };
+    Project: NavigatorScreenParams<ProjectStackParamList>;
+};
+
 
   export type Root = CompositeScreenProps<
   BottomTabScreenProps<RootStackParamList>,
-  CompositeScreenProps<NativeStackScreenProps<UserStackParamList>, NativeStackScreenProps<ProjectStackParamList>>
+  CompositeScreenProps<NativeStackScreenProps<UserStackParamList>, NativeStackScreenProps<ProjectStackParamList>
 >;
