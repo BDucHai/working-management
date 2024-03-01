@@ -1,6 +1,6 @@
 // You can import Ionicons from @expo/vector-icons/Ionicons if you use Expo or
 // react-native-vector-icons/Ionicons otherwise.
-import { Entypo, Feather } from "@expo/vector-icons";
+import { AntDesign, Entypo, Feather, MaterialIcons } from "@expo/vector-icons";
 import HomePage from "./screens/HomePage";
 import UserPage from "./screens/User";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,12 +9,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginPage from "./screens/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
+  MeetingStackParamList,
   ProjectStackParamList,
   RootStackParamList,
   UserStackParamList,
 } from "./navigation/types";
 import SignupPage from "./screens/Signup";
 import ProjectPage from "./screens/ProjectPage";
+import ChatPage from "./screens/Chat";
+import MeetingPage from "./screens/Meeting";
 
 // export props to use in page
 // export type Props = BottomTabScreenProps<RootStackParamList>;
@@ -24,6 +27,7 @@ import ProjectPage from "./screens/ProjectPage";
 const Tab = createBottomTabNavigator<RootStackParamList>();
 const UserTab = createNativeStackNavigator<UserStackParamList>();
 const ProjectTab = createNativeStackNavigator<ProjectStackParamList>();
+const MeetingTab = createNativeStackNavigator<MeetingStackParamList>();
 
 function User() {
   return (
@@ -61,7 +65,18 @@ function Project() {
     </ProjectTab.Navigator>
   );
 }
-
+function Meeting() {
+  return (
+    <MeetingTab.Navigator
+      initialRouteName="ListMeeting"
+      screenOptions={{ headerShown: false }}
+    >
+      <MeetingTab.Screen name="ListMeeting" component={MeetingPage} />
+      <MeetingTab.Screen name="Chat" component={ChatPage} />
+      <MeetingTab.Screen name="Video" component={MeetingPage} />
+    </MeetingTab.Navigator>
+  );
+}
 export default function App() {
   return (
     <NavigationContainer>
@@ -71,23 +86,41 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             switch (route.name) {
               case "Home":
-                return focused ? (
-                  <Entypo name="home" size={24} color="#3D5CFF" />
-                ) : (
-                  <Feather name="home" size={24} color="black" />
+                return (
+                  <Feather
+                    name="home"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
                 );
+
               case "User":
-                return focused ? (
-                  <Entypo name="user" size={24} color="#3D5CFF" />
-                ) : (
-                  <Feather name="user" size={24} color="black" />
+                return (
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
                 );
+
               case "Project":
-                return focused ? (
-                  <Entypo name="book" size={24} color="#3D5CFF" />
-                ) : (
-                  <Feather name="book" size={24} color="black" />
+                return (
+                  <Feather
+                    name="book"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
                 );
+
+              case "Meeting":
+                return (
+                  <AntDesign
+                    name="videocamera"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
+                );
+
               default:
                 return;
             }
@@ -102,13 +135,18 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Tab.Screen
-          name="User"
-          component={User}
+          name="Project"
+          component={Project}
           options={{ headerShown: false }}
         />
         <Tab.Screen
-          name="Project"
-          component={Project}
+          name="Meeting"
+          component={Meeting}
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen
+          name="User"
+          component={User}
           options={{ headerShown: false }}
         />
       </Tab.Navigator>
