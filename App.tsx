@@ -15,7 +15,10 @@ import {
   UserStackParamList,
 } from "./navigation/types";
 import SignupPage from "./screens/Signup";
+
 import ProjectPage from "./screens/ProjectPage";
+import DetailProject from "./screens/DetailProjectPage";
+import DetailProjectPage from "./screens/DetailProjectPage";
 import ChatPage from "./screens/Chat";
 import MeetingPage from "./screens/Meeting";
 
@@ -46,7 +49,7 @@ function User() {
         options={{ headerShown: false }}
       />
       <UserTab.Screen
-        name="Signin"
+        name="Signup"
         component={SignupPage}
         options={{ headerShown: false }}
       />
@@ -60,6 +63,11 @@ function Project() {
       <ProjectTab.Screen
         name="List"
         component={ProjectPage}
+        options={{ headerShown: false }}
+      />
+      <ProjectTab.Screen
+        name="DetailProjectPage"
+        component={DetailProjectPage}
         options={{ headerShown: false }}
       />
     </ProjectTab.Navigator>

@@ -8,10 +8,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 export type UserStackParamList = {
   Todo: undefined;
   Login: undefined;
+  Signup: undefined
   UserProfile: undefined;
 };
 export type ProjectStackParamList = {
   List: undefined;
+  DetailProjectPage: undefined;
 };
 export type MeetingStackParamList = {
   ListMeeting: undefined

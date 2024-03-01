@@ -4,6 +4,7 @@ import SlideShow from "../components/homepages/slideshow";
 import Meeting from "../components/homepages/meeting";
 import Upcomming from "../components/homepages/upcoming";
 import { User } from "../types/user.type";
+import { ScrollView } from "react-native-gesture-handler";
 
 const HomePage = () => {
   const user: User = {

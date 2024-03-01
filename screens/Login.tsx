@@ -70,7 +70,7 @@ export default function LoginPage({ navigation }: Root) {
           <View className="flex flex-row gap-x-2">
             <Text>You don't have account?</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate("User", { screen: "Signin" })}
+              onPress={() => navigation.navigate("User", { screen: "Signup" })}
             >
               <Text className="text-primary">Sign-up </Text>
             </TouchableOpacity>
