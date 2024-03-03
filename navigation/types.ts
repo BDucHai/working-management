@@ -11,15 +11,19 @@ export type UserStackParamList = {
   Signup: undefined
   UserProfile: undefined;
 };
+
 export type ProjectStackParamList = {
   List: undefined;
   DetailProjectPage: undefined;
+  AddProject: undefined;
 };
+
 export type MeetingStackParamList = {
   ListMeeting: undefined
   Chat: undefined;
   Video: undefined;
 };
+
 export type RootStackParamList = {
   Home: undefined;
   User: NavigatorScreenParams<UserStackParamList>;
