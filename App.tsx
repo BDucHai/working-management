@@ -1,26 +1,30 @@
 // You can import Ionicons from @expo/vector-icons/Ionicons if you use Expo or
 // react-native-vector-icons/Ionicons otherwise.
-import { AntDesign, Entypo, Feather, MaterialIcons } from "@expo/vector-icons";
-import HomePage from "./screens/HomePage";
-import UserPage from "./screens/User";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import LoginPage from "./screens/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {
-  MeetingStackParamList,
-  ProjectStackParamList,
-  RootStackParamList,
-  UserStackParamList,
-} from "./navigation/types";
-import SignupPage from "./screens/Signup";
 
+import HomePage from "./screens/HomePage";
+import UserPage from "./screens/User";
+import LoginPage from "./screens/Login";
+import SignupPage from "./screens/Signup";
 import ProjectPage from "./screens/ProjectPage";
-import DetailProject from "./screens/DetailProjectPage";
 import DetailProjectPage from "./screens/DetailProjectPage";
 import ChatPage from "./screens/Chat";
 import MeetingPage from "./screens/Meeting";
+
+import {
+  MeetingProp,
+  MeetingStackParamList,
+  ProjectStackParamList,
+  Root,
+  RootStackParamList,
+  UserStackParamList,
+} from "./navigation/types";
+import VideoCallPage from "./screens/VideoCall";
 
 // export props to use in page
 // export type Props = BottomTabScreenProps<RootStackParamList>;
@@ -81,7 +85,7 @@ function Meeting() {
     >
       <MeetingTab.Screen name="ListMeeting" component={MeetingPage} />
       <MeetingTab.Screen name="Chat" component={ChatPage} />
-      <MeetingTab.Screen name="Video" component={MeetingPage} />
+      <MeetingTab.Screen name="Video" component={VideoCallPage} />
     </MeetingTab.Navigator>
   );
 }
@@ -135,28 +139,13 @@ export default function App() {
           },
           tabBarActiveTintColor: "#3D5CFF",
           tabBarInactiveTintColor: "gray",
+          headerShown: false,
         })}
       >
-        <Tab.Screen
-          name="Home"
-          component={HomePage}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name="Project"
-          component={Project}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name="Meeting"
-          component={Meeting}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name="User"
-          component={User}
-          options={{ headerShown: false }}
-        />
+        <Tab.Screen name="Home" component={HomePage} />
+        <Tab.Screen name="Project" component={Project} />
+        <Tab.Screen name="Meeting" component={Meeting} />
+        <Tab.Screen name="User" component={User} />
       </Tab.Navigator>
     </NavigationContainer>
   );

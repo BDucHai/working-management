@@ -26,7 +26,7 @@ export type RootStackParamList = {
   Project: NavigatorScreenParams<ProjectStackParamList>;
   Meeting: NavigatorScreenParams<MeetingStackParamList>;
 };
-
+export type MeetingProp = NativeStackScreenProps<MeetingStackParamList>
 export type Root = CompositeScreenProps<
   BottomTabScreenProps<RootStackParamList>,
   CompositeScreenProps<
