@@ -15,12 +15,11 @@ import ProjectPage from "./screens/ProjectPage";
 import DetailProjectPage from "./screens/DetailProjectPage";
 import ChatPage from "./screens/Chat";
 import MeetingPage from "./screens/Meeting";
+import AddProject from "./screens/AddProject";
 
 import {
-  MeetingProp,
   MeetingStackParamList,
   ProjectStackParamList,
-  Root,
   RootStackParamList,
   UserStackParamList,
 } from "./navigation/types";
@@ -72,6 +71,11 @@ function Project() {
       <ProjectTab.Screen
         name="DetailProjectPage"
         component={DetailProjectPage}
+        options={{ headerShown: false }}
+      />
+      <ProjectTab.Screen
+        name="AddProject"
+        component={AddProject}
         options={{ headerShown: false }}
       />
     </ProjectTab.Navigator>

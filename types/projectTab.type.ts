@@ -3,6 +3,7 @@ export interface MyProject {
     member: number| undefined;
     progress: number |undefined;
 }
+//  Chinhr cai member vao myproject sau lam ui da
 
 export interface Task {
     name: string |undefined;
@@ -16,5 +17,8 @@ export interface DetailProject{
     member: string|undefined;  
     // cho nay la list member nhma k bich vit
     tasks: Task[];
-    
+}
+
+export interface Member{
+    name: "",
 }
