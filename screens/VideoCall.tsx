@@ -5,7 +5,7 @@ import FootVideoCall from "../components/videocall/footVideoCall";
 
 export default function VideoCallPage() {
   return (
-    <View className="flex-1 px-4">
+    <View className="flex-1">
       <HeaderVideoCall />
       <ScrollView>
         <UserCall />

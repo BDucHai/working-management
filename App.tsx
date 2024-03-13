@@ -24,7 +24,8 @@ import {
   UserStackParamList,
 } from "./navigation/types";
 import VideoCallPage from "./screens/VideoCall";
-
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 // export props to use in page
 // export type Props = BottomTabScreenProps<RootStackParamList>;
 // export type UserProps = NativeStackScreenProps<UserStackParamList>;
@@ -39,7 +40,7 @@ function User() {
   return (
     <UserTab.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName={false ? "Login" : "UserProfile"}
+      initialRouteName={true ? "Login" : "UserProfile"}
     >
       <UserTab.Screen
         name="UserProfile"
@@ -95,62 +96,64 @@ function Meeting() {
 }
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            switch (route.name) {
-              case "Home":
-                return (
-                  <Feather
-                    name="home"
-                    size={24}
-                    color={focused ? "#3D5CFF" : "black"}
-                  />
-                );
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Home"
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              switch (route.name) {
+                case "Home":
+                  return (
+                    <Feather
+                      name="home"
+                      size={24}
+                      color={focused ? "#3D5CFF" : "black"}
+                    />
+                  );
 
-              case "User":
-                return (
-                  <Feather
-                    name="user"
-                    size={24}
-                    color={focused ? "#3D5CFF" : "black"}
-                  />
-                );
+                case "User":
+                  return (
+                    <Feather
+                      name="user"
+                      size={24}
+                      color={focused ? "#3D5CFF" : "black"}
+                    />
+                  );
 
-              case "Project":
-                return (
-                  <Feather
-                    name="book"
-                    size={24}
-                    color={focused ? "#3D5CFF" : "black"}
-                  />
-                );
+                case "Project":
+                  return (
+                    <Feather
+                      name="book"
+                      size={24}
+                      color={focused ? "#3D5CFF" : "black"}
+                    />
+                  );
 
-              case "Meeting":
-                return (
-                  <AntDesign
-                    name="videocamera"
-                    size={24}
-                    color={focused ? "#3D5CFF" : "black"}
-                  />
-                );
+                case "Meeting":
+                  return (
+                    <AntDesign
+                      name="videocamera"
+                      size={24}
+                      color={focused ? "#3D5CFF" : "black"}
+                    />
+                  );
 
-              default:
-                return;
-            }
-          },
-          tabBarActiveTintColor: "#3D5CFF",
-          tabBarInactiveTintColor: "gray",
-          headerShown: false,
-        })}
-      >
-        <Tab.Screen name="Home" component={HomePage} />
-        <Tab.Screen name="Project" component={Project} />
-        <Tab.Screen name="Meeting" component={Meeting} />
-        <Tab.Screen name="User" component={User} />
-      </Tab.Navigator>
-    </NavigationContainer>
+                default:
+                  return;
+              }
+            },
+            tabBarActiveTintColor: "#3D5CFF",
+            tabBarInactiveTintColor: "gray",
+            headerShown: false,
+          })}
+        >
+          <Tab.Screen name="Home" component={HomePage} />
+          <Tab.Screen name="Project" component={Project} />
+          <Tab.Screen name="Meeting" component={Meeting} />
+          <Tab.Screen name="User" component={User} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }

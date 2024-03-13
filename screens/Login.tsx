@@ -3,6 +3,11 @@ import { useForm, Controller } from "react-hook-form";
 import { Image } from "react-native";
 import { Root } from "../navigation/types";
 import InputFeild from "../components/input";
+import axios, { AxiosError } from "axios";
+import { BACKEND_URL } from "../constant";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface UserLogin {
   email: string;
@@ -10,6 +15,7 @@ interface UserLogin {
 }
 
 export default function LoginPage({ navigation }: Root) {
+  const dispatch: AppDispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -22,7 +28,26 @@ export default function LoginPage({ navigation }: Root) {
   });
   const onSubmit = (data: UserLogin) => {
     console.log(data);
-    navigation.navigate("Home");
+    const res = axios({
+      method: "POST",
+      url: `/auth/login`,
+      baseURL: BACKEND_URL,
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      data,
+    })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.accessToken) {
+          const { accessToken, refreshToken } = res.data;
+          AsyncStorage.setItem("AccessToken", accessToken);
+          AsyncStorage.setItem("RefreshToken", refreshToken);
+          navigation.navigate("Home");
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
