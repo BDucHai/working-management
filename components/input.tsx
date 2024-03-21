@@ -20,7 +20,7 @@ const InputFeild = ({
     <Controller
       control={control}
       rules={{
-        required: true,
+        required: false,
       }}
       render={({ field: { onChange, onBlur, value } }) => (
         <View className="mt-2">
