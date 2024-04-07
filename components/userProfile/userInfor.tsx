@@ -34,6 +34,7 @@ export default function UserInfor({ user }: { user: User | null }) {
             <View
               key={infor.content}
               className="flex-1 flex-row justify-between items-center ">
+              className="flex-1 flex-row justify-between items-center ">
               <View className="flex-1 flex-row items-center gap-x-4">
                 <AntDesign name={infor.icon} size={24} color="#aaa" />
                 <Text className="text-gray-500">{infor.content}</Text>

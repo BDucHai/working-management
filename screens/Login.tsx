@@ -6,6 +6,7 @@ import InputFeild from "../components/input";
 import axios, { AxiosError } from "axios";
 import { BACKEND_URL } from "../constant";
 import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { changeLogin, login, selectIsLoading } from "../redux/authSlice";
@@ -22,6 +23,7 @@ interface UserLogin {
 
 export default function LoginPage({ navigation }: Root) {
   const dispatch: AppDispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
   const isLoading = useSelector(selectIsLoading);
   const {
     control,
@@ -93,11 +95,13 @@ export default function LoginPage({ navigation }: Root) {
           <TouchableOpacity
             className="w-full rounded-lg bg-primary flex justify-center items-center px-4 py-4"
             onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}>
             <Text className="text-white text-base font-semibold">Login</Text>
           </TouchableOpacity>
           <View className="flex flex-row gap-x-2">
             <Text>You don't have account?</Text>
             <TouchableOpacity
+              onPress={() => navigation.navigate("User", { screen: "Signup" })}>
               onPress={() => navigation.navigate("User", { screen: "Signup" })}>
               <Text className="text-primary">Sign-up </Text>
             </TouchableOpacity>
