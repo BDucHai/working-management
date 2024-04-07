@@ -1,33 +1,45 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
+import { Message } from "../../types/message.type";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../redux/authSlice";
 
-export default function Message({
-  message,
-  your,
-}: {
-  message: string;
-  your?: boolean;
-}) {
+export default function MessageDetail({ message }: { message: Message }) {
+  const user = useSelector(selectCurrentUser);
+  const myMessage = message.user.id === user?.id;
+  const base64regex =
+    /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+  const isImage = base64regex.test(message.content);
   return (
     <View
-      className={`mt-4 space-x-4 flex-row ${your ? "flex-row-reverse" : ""}`}
-    >
-      {!your && (
+      className={`mt-4 space-x-4 flex-row ${
+        myMessage ? "flex-row-reverse" : ""
+      }`}>
+      {!myMessage && (
         <Image
           source={require("./../../assets/img/user.jpg")}
           className="w-[40px] h-[40px] rounded-full self-start"
         />
       )}
       <View>
-        {!your && <Text className="text-[12px]">John</Text>}
+        {!myMessage && <Text className="text-[12px]">{message.user.name}</Text>}
+
         <View
           className={`rounded-full ${
-            your ? "bg-primary rounded-tr-sm " : "bg-white rounded-bl-sm"
-          } px-4 py-4  max-w-[250px]`}
-        >
-          <Text className={`${your ? "text-white" : ""} font-medium`}>
-            {message}
-          </Text>
+            myMessage ? "bg-primary rounded-tr-sm " : "bg-white rounded-bl-sm"
+          } px-4 py-4  max-w-[250px] ${isImage ? "p-0" : ""}`}>
+          {!isImage ? (
+            <Text className={`${myMessage ? "text-white" : ""} font-medium`}>
+              {message.content}
+            </Text>
+          ) : (
+            <Image
+              source={{
+                uri: `data:${message.mimeType};base64,${message.content}`,
+              }}
+              style={{ height: 200, width: 200 }}
+            />
+          )}
         </View>
       </View>
     </View>

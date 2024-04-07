@@ -1,8 +1,18 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { useDispatch } from "react-redux";
+import { requestSocket } from "../../redux/socketSlice";
+import { AppDispatch } from "../../redux/store";
 
-export default function Img() {
+export default function Img({
+  roomId,
+  userId,
+}: {
+  roomId: number | undefined;
+  userId: number | undefined;
+}) {
+  const dispatch: AppDispatch = useDispatch();
   async function handleGallery() {
     await ImagePicker.requestMediaLibraryPermissionsAsync();
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -10,10 +20,20 @@ export default function Img() {
       allowsEditing: true,
       quality: 1,
       aspect: [1, 1],
+      base64: true,
     });
-    console.log(result);
-    if (!result.canceled) {
-    }
+    if (result.canceled) return;
+
+    // data format base64
+    const { base64, mimeType } = result.assets[0];
+    console.log(mimeType);
+    await dispatch(
+      requestSocket({
+        event: "createMessage",
+        data: { message: base64, userId, roomId, mimeType },
+      })
+    );
+    console.log("done");
   }
   return (
     <TouchableOpacity onPress={handleGallery}>

@@ -1,23 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, ScrollView, Button } from "react-native";
 import HeaderChat from "../components/chat/headerChat";
 import Message from "../components/chat/message";
 import ChatInput from "../components/chat/chatInput";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  receiveListMessage,
+  receiveSocket,
+  requestSocket,
+  selectRooms,
+} from "../redux/socketSlice";
+import { AppDispatch } from "../redux/store";
+import { Room } from "../types/room.type";
+import { useRoute } from "@react-navigation/native";
+import { ChatScreenRouteProp } from "../navigation/types";
+import MessageDetail from "../components/chat/message";
 
 const ChatPage = () => {
+  const route = useRoute<ChatScreenRouteProp>();
+  const room: Room = route.params.room;
+
+  const dispatch: AppDispatch = useDispatch();
+  const listRooms = useSelector(selectRooms);
+  const roomIndex = listRooms.findIndex((data) => data.id === room.id);
+  const listMessages = listRooms.at(roomIndex)?.messages;
+  // console.log(listMessages);
+  useEffect(() => {
+    dispatch(
+      requestSocket({
+        event: "requestAllMessagesInRoom",
+        data: { roomId: room.id },
+      })
+    );
+
+    dispatch(receiveListMessage({ roomIndex }));
+  }, []);
   return (
     <View className="flex-1 ">
       <HeaderChat />
       <ScrollView className="flex-1 px-4 ">
-        <Message message="What's up today,Dude? Today we must finish work" />
-        <Message message="Okay that's right " />
-        <Message message="I still no" your={true} />
-        <Message
-          message="Okay let's go come haahh. I complete ux ui"
-          your={true}
-        />
+        {listMessages?.map((message) => (
+          <MessageDetail key={message.id} message={message} />
+        ))}
       </ScrollView>
-      <ChatInput />
+      <ChatInput room={room} />
     </View>
   );
 };

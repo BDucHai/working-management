@@ -1,7 +1,8 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
+import { User } from "../../types/user.type";
 
-export default function UserHeader() {
+export default function UserHeader({ user }: { user: User | null }) {
   return (
     <View>
       <View className="h-[150px] bg-primary"></View>
@@ -15,7 +16,7 @@ export default function UserHeader() {
         <View className="items-center space-y-2 transform -translate-y-16">
           <Text className="text-blue-300 text-lg ">@johnsmith</Text>
           <Text className="font-semibold text-2xl text-gray-700 ">
-            John Smith
+            {user?.name}
           </Text>
           <View className="flex flex-row gap-x-1">
             <Text className="italic">Software Engineer</Text>

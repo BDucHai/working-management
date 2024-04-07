@@ -9,7 +9,10 @@ export default function HeaderChat() {
     <View className="basis-1/6 px-4 justify-center">
       <View className="flex-row bg-[#FAFAFA] justify-around items-center py-4 rounded-full mt-10">
         <View className="w-12 h-12 rounded-full bg-[#F3F3F3] items-center justify-center">
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}>
             <Ionicons name="chevron-back-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -24,8 +27,7 @@ export default function HeaderChat() {
               navigation.navigate("Meeting", {
                 screen: "Video",
               })
-            }
-          >
+            }>
             <FontAwesome5 name="video" size={20} color="black" />
           </TouchableOpacity>
         </View>
