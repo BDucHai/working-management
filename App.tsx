@@ -66,27 +66,6 @@ function User() {
           />
         </>
       )}
-      initialRouteName={user ? "UserProfile" : "Login"}>
-      {user ? (
-        <UserTab.Screen
-          name="UserProfile"
-          component={UserPage}
-          options={{ headerShown: false }}
-        />
-      ) : (
-        <>
-          <UserTab.Screen
-            name="Login"
-            component={LoginPage}
-            options={{ headerShown: false }}
-          />
-          <UserTab.Screen
-            name="Signup"
-            component={SignupPage}
-            options={{ headerShown: false }}
-          />
-        </>
-      )}
     </UserTab.Navigator>
   );
 }
@@ -142,20 +121,6 @@ export default function App() {
   //   console.log(state);
   // }, [state]);
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            switch (route.name) {
-              case "Home":
-                return (
-                  <Feather
-                    name="home"
-                    size={24}
-                    color={focused ? "#3D5CFF" : "black"}
-                  />
-                );
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
