@@ -8,6 +8,7 @@ import { AppDispatch } from "../redux/store";
 import {
   receiveSocket,
   requestSocket,
+  saveCurrentRoom,
   selectRooms,
 } from "../redux/socketSlice";
 
@@ -19,6 +20,7 @@ const MeetingPage = () => {
   useEffect(() => {
     dispatch(requestSocket({ event: "requestListRoom", data: null }));
     dispatch(receiveSocket({ event: "getListRoom", type: "saveListRoom" }));
+    dispatch(saveCurrentRoom(""));
   }, []);
   return (
     <View className="flex-1 px-4">

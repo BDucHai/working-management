@@ -3,10 +3,18 @@ import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Room } from "../../types/room.type";
+import { useDispatch } from "react-redux";
+import { saveCurrentRoom } from "../../redux/socketSlice";
+import { AppDispatch } from "../../redux/store";
 
 export default function TeamView({ room }: { room: Room }) {
   const navigation = useNavigation();
+  const dispatch: AppDispatch = useDispatch();
   const calling = false;
+  useEffect(() => {
+    if (!room.id) return;
+    dispatch(saveCurrentRoom("room" + room.id));
+  }, []);
   if (!room) return;
   return (
     <View

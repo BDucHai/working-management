@@ -7,10 +7,12 @@ import { Message } from "./../types/message.type";
 interface ISocket {
   status: "connect" | "disconnect" | "pending";
   rooms: Room[];
+  currentRoom: string;
 }
 const initialState: ISocket = {
   status: "disconnect",
   rooms: [],
+  currentRoom: "",
 };
 export const connectSocket = createAsyncThunk(
   "socket/connect",
@@ -87,6 +89,9 @@ const SocketState = createSlice({
       const { data, roomIndex } = action.payload;
       state.rooms[roomIndex].messages = data;
     },
+    saveCurrentRoom(state, action) {
+      state.currentRoom = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -113,6 +118,11 @@ const SocketState = createSlice({
 
 export const selectSocket = (state: RootState) => state.socket.status;
 export const selectRooms = (state: RootState) => state.socket.rooms;
-export const { clearSocket, saveListRoom, saveAllMessagesInRoom } =
-  SocketState.actions;
+export const selectCurrentRoom = (state: RootState) => state.socket.currentRoom;
+export const {
+  clearSocket,
+  saveListRoom,
+  saveAllMessagesInRoom,
+  saveCurrentRoom,
+} = SocketState.actions;
 export default SocketState.reducer;
