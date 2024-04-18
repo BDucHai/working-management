@@ -8,6 +8,7 @@ import {
   receiveListMessage,
   receiveSocket,
   requestSocket,
+  saveCurrentRoom,
   selectRooms,
 } from "../redux/socketSlice";
 import { AppDispatch } from "../redux/store";
@@ -34,6 +35,8 @@ const ChatPage = () => {
     );
 
     dispatch(receiveListMessage({ roomIndex }));
+
+    dispatch(saveCurrentRoom(room.name.split(" ").join("-")));
   }, []);
   return (
     <View className="flex-1 ">

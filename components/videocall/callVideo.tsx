@@ -20,7 +20,8 @@ export default function VideoCall() {
   useEffect(() => {
     async function connectVideoCall() {
       try {
-        console.log(client?.state);
+        // console.log(client?.state);
+        console.log("room" + callId);
         if (!client) return;
         const call = client.call(callType, callId);
         await call.join({ create: true });
@@ -34,7 +35,7 @@ export default function VideoCall() {
   if (!call) {
     return (
       <View className="flex-1 justify-center items-center">
-        <Text>Joining call ${callId}...</Text>
+        <Text>Joining call ${callId.split("-").join(" ")}...</Text>
       </View>
     );
   }
