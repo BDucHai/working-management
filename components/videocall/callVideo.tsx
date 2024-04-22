@@ -33,6 +33,7 @@ export default function VideoCall() {
     connectVideoCall();
   }, [client]);
   if (!call) {
+    console.log("room " + callId);
     return (
       <View className="flex-1 justify-center items-center">
         <Text>Joining call ${callId.split("-").join(" ")}...</Text>

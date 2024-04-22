@@ -8,11 +8,34 @@ interface ISocket {
   status: "connect" | "disconnect" | "pending";
   rooms: Room[];
   currentRoom: string;
+  currentRoomId: number;
+  invitation: {
+    from: string;
+    fromSocket: string;
+    room: string;
+    roomId: number | undefined;
+  };
+  refuseMessage: string | undefined;
+  aceptMessage: string | undefined;
+  message: {
+    from: string | undefined;
+    room: string | undefined;
+    content: string | undefined;
+  };
 }
 const initialState: ISocket = {
   status: "disconnect",
   rooms: [],
   currentRoom: "",
+  currentRoomId: 0,
+  invitation: { from: "", room: "", fromSocket: "", roomId: undefined },
+  refuseMessage: undefined,
+  aceptMessage: undefined,
+  message: {
+    content: undefined,
+    from: undefined,
+    room: undefined,
+  },
 };
 export const connectSocket = createAsyncThunk(
   "socket/connect",
@@ -45,13 +68,12 @@ export const requestSocket = createAsyncThunk(
 );
 export const receiveSocket = createAsyncThunk(
   "socket/receiveSocket",
-  async (payload: { event: string; type: string }, { getState, dispatch }) => {
+  async (payload: { event: string; type?: string }, { getState, dispatch }) => {
     try {
       const { event, type } = payload;
-
       await socketClient.on(event, (data: any) => {
-        // console.log(data);
-        dispatch({ type: `socket/${type}`, payload: data });
+        console.log(data);
+        if (type) dispatch({ type: `socket/${type}`, payload: data });
       });
       // return response;
     } catch (err) {
@@ -92,6 +114,43 @@ const SocketState = createSlice({
     saveCurrentRoom(state, action) {
       state.currentRoom = action.payload;
     },
+    saveCurrentRoomId(state, action) {
+      state.currentRoomId = action.payload;
+    },
+    informMessage(state, action) {
+      console.log(action.payload);
+      state.message = action.payload;
+    },
+    resetInformMessage(state) {
+      state.message = {
+        content: undefined,
+        from: undefined,
+        room: undefined,
+      };
+    },
+    inform(state, action) {
+      state.invitation = action.payload;
+    },
+    resetInform(state) {
+      state.invitation = {
+        from: "",
+        room: "",
+        fromSocket: "",
+        roomId: undefined,
+      };
+    },
+    refuseMessage(state, action) {
+      state.refuseMessage = action.payload;
+    },
+    aceptMessage(state, action) {
+      state.aceptMessage = action.payload;
+    },
+    resetAceptMessage(state) {
+      state.aceptMessage = undefined;
+    },
+    resetRefuseMessage(state) {
+      state.refuseMessage = undefined;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -119,10 +178,23 @@ const SocketState = createSlice({
 export const selectSocket = (state: RootState) => state.socket.status;
 export const selectRooms = (state: RootState) => state.socket.rooms;
 export const selectCurrentRoom = (state: RootState) => state.socket.currentRoom;
+export const selectCurrentRoomId = (state: RootState) =>
+  state.socket.currentRoomId;
+export const selectInvitation = (state: RootState) => state.socket.invitation;
+export const selectRefuseMessage = (state: RootState) =>
+  state.socket.refuseMessage;
+export const selectAceptMessage = (state: RootState) =>
+  state.socket.aceptMessage;
+export const selectInformMessage = (state: RootState) => state.socket.message;
 export const {
   clearSocket,
   saveListRoom,
   saveAllMessagesInRoom,
   saveCurrentRoom,
+  saveCurrentRoomId,
+  resetInformMessage,
+  resetInform,
+  resetRefuseMessage,
+  resetAceptMessage,
 } = SocketState.actions;
 export default SocketState.reducer;

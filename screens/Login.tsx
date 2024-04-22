@@ -42,6 +42,8 @@ export default function LoginPage({ navigation }: Root) {
       type: `${res.message ? "error" : "success"}`,
       text1: `${res.message ? res.message : "Login successfully"}`,
       visibilityTime: 2000,
+      topOffset: 0,
+      position: "top",
     });
     if (!res.message) {
       await AsyncStorage.setItem("AccessToken", res?.accessToken);

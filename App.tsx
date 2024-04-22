@@ -28,7 +28,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "./redux/authSlice";
 import { AppDispatch, RootState } from "./redux/store";
-import { connectSocket, disConnectSocket } from "./redux/socketSlice";
+import {
+  connectSocket,
+  disConnectSocket,
+  receiveSocket,
+  resetAceptMessage,
+  resetInformMessage,
+  resetRefuseMessage,
+  selectAceptMessage,
+  selectInformMessage,
+  selectRefuseMessage,
+} from "./redux/socketSlice";
+import Toast from "react-native-toast-message";
 
 // export props to use in page
 // export type Props = BottomTabScreenProps<RootStackParamList>;
@@ -105,21 +116,62 @@ function Meeting() {
 export default function App() {
   const dispatch: AppDispatch = useDispatch();
   const isLogin = useSelector((state: RootState) => state.auth.isLogin);
+  const refuseMessage = useSelector(selectRefuseMessage);
+  const aceptMessage = useSelector(selectAceptMessage);
+  const { content, from, room } = useSelector(selectInformMessage);
+
   useEffect(() => {
     const boostrapAsync = async () => {
       try {
         const accessToken = (await AsyncStorage.getItem("AccessToken")) || "";
-        if (isLogin) dispatch(connectSocket(accessToken));
+        if (isLogin) {
+          dispatch(connectSocket(accessToken));
+          dispatch(receiveSocket({ event: "invitation", type: "inform" }));
+          dispatch(receiveSocket({ event: "refuse", type: "refuseMessage" }));
+          dispatch(receiveSocket({ event: "acept", type: "aceptMessage" }));
+          dispatch(receiveSocket({ event: "message", type: "informMessage" }));
+        }
       } catch {}
     };
     boostrapAsync();
     return () => {
       dispatch(disConnectSocket());
     };
-  }, [isLogin]);
-  // useEffect(() => {
-  //   console.log(state);
-  // }, [state]);
+  }, [dispatch, isLogin]);
+  useEffect(() => {
+    if (refuseMessage) {
+      Toast.show({
+        type: "info",
+        text1: refuseMessage,
+        visibilityTime: 2000,
+        position: "top",
+        topOffset: 0,
+      });
+      dispatch(resetRefuseMessage());
+    }
+    if (aceptMessage) {
+      Toast.show({
+        type: "info",
+        text1: aceptMessage,
+
+        visibilityTime: 2000,
+        position: "top",
+        topOffset: 0,
+      });
+      dispatch(resetAceptMessage());
+    }
+    if (content) {
+      Toast.show({
+        type: "info",
+        text1: `${from} send to ${room} `,
+        text2: content,
+        visibilityTime: 2000,
+        position: "top",
+        topOffset: 0,
+      });
+      dispatch(resetInformMessage());
+    }
+  }, [refuseMessage, aceptMessage, content]);
   return (
     <NavigationContainer>
       <Tab.Navigator

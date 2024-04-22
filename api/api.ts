@@ -3,6 +3,7 @@ import { BACKEND_URL } from "../constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const axiosClient = async (method: any, url: string, body?: any) => {
+  console.log(body);
   const instance = axios.create({
     baseURL: BACKEND_URL,
     headers: {

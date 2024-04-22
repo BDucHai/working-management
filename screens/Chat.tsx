@@ -9,6 +9,7 @@ import {
   receiveSocket,
   requestSocket,
   saveCurrentRoom,
+  saveCurrentRoomId,
   selectRooms,
 } from "../redux/socketSlice";
 import { AppDispatch } from "../redux/store";
@@ -35,12 +36,16 @@ const ChatPage = () => {
     );
 
     dispatch(receiveListMessage({ roomIndex }));
-
     dispatch(saveCurrentRoom(room.name.split(" ").join("-")));
+    dispatch(saveCurrentRoomId(room.id));
   }, []);
   return (
-    <View className="flex-1 ">
-      <HeaderChat />
+    <View className="flex-1">
+      <HeaderChat
+        numberMember={room.numberMember}
+        name={room.name}
+        roomId={room.id}
+      />
       <ScrollView className="flex-1 px-4 ">
         {listMessages?.map((message) => (
           <MessageDetail key={message.id} message={message} />

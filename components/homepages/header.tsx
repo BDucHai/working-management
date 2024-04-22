@@ -17,7 +17,7 @@ const Header = ({ user }: { user: User | null }) => {
             {user?.name && (
               <View className="justify-center">
                 <Image
-                  source={require("./../../assets/img/scence.jpg")}
+                  source={require("./../../assets/img/default.jpg")}
                   className="w-[50px] h-[50px] rounded-full object-top"
                 />
               </View>

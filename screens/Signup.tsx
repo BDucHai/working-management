@@ -23,7 +23,7 @@ interface Data {
   email: string;
   password: string;
   passwordConfirm: string;
-  role: string;
+  position: string;
 }
 export default function SignupPage({ navigation }: Root) {
   const dispatch: AppDispatch = useDispatch();
@@ -40,20 +40,21 @@ export default function SignupPage({ navigation }: Root) {
       email: "",
       password: "",
       name: "",
-      birth: "",
+      position: "",
       passwordConfirm: "",
-      role: "guest",
     },
   });
   const onSubmit = async (data: Data) => {
     Keyboard.dismiss();
-    const { email, name, password } = data;
-    const infor = await dispatch(signUp({ name, email, password }));
+    const { email, name, password, position } = data;
+    const infor = await dispatch(signUp({ name, email, password, position }));
     const res = unwrapResult(infor);
     Toast.show({
       type: `${res.message ? "error" : "success"}`,
       text1: `${res.message ? res.message : "Sign up successfully"}`,
       visibilityTime: 2000,
+      position: "top",
+      topOffset: 0,
     });
     setTimeout(() => {
       if (!res.message) navigation.navigate("Login");
@@ -89,13 +90,13 @@ export default function SignupPage({ navigation }: Root) {
           <View className="flex-1">
             <InputFeild
               control={control}
-              name="birth"
-              placeholder="dd/mm/yyyy"
-              title="Date of Birth"
+              name="position"
+              placeholder="Dev,BA,.."
+              title="Position"
             />
-            {errors.birth && (
+            {errors.position && (
               <Text className="text-red-600 mt-2">
-                Please provide your infor
+                Please provide your position
               </Text>
             )}
           </View>

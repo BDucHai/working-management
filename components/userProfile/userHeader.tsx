@@ -9,26 +9,23 @@ export default function UserHeader({ user }: { user: User | null }) {
 
       <View className="bg-white justify-center items-center pt-4">
         <Image
-          source={require("./../../assets/img/user.jpg")}
+          source={require("./../../assets/img/default.jpg")}
           className="w-[86px] h-[86px] rounded-full transform -translate-y-16"
         />
 
         <View className="items-center space-y-2 transform -translate-y-16">
-          <Text className="text-blue-300 text-lg ">@johnsmith</Text>
+          <Text className="text-blue-300 text-lg ">{user?.email}</Text>
           <Text className="font-semibold text-2xl text-gray-700 ">
             {user?.name}
           </Text>
           <View className="flex flex-row gap-x-1">
-            <Text className="italic">Software Engineer</Text>
+            <Text className="italic">{user?.position}</Text>
             <Text className="text-primary">| Joined Aug 2023</Text>
           </View>
           <View className="w-4/5">
             <Text className="text-center leading-5 text-gray-500 ">
-              CEO System D Lorem ipsum, dolor sit amet consectetur adipisicing
-              elit. Maxime distinctio vel libero illo quia voluptatum modi
-              nostrum tempore. Ut temporibus recusandae perferendis magni
-              nesciunt. Repellat voluptates accusantium maxime repudiandae
-              ducimus? lorem
+              Maxime distinctio vel libero illo quia voluptatum modi nostrum
+              tempore.
             </Text>
           </View>
         </View>

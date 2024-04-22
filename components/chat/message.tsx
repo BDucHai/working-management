@@ -22,7 +22,11 @@ export default function MessageDetail({ message }: { message: Message }) {
         />
       )}
       <View>
-        {!myMessage && <Text className="text-[12px]">{message.user.name}</Text>}
+        {!myMessage && (
+          <Text className="text-[12px]">
+            {message.user.name} - {message.user.position}
+          </Text>
+        )}
 
         <View
           className={`rounded-full ${

@@ -23,8 +23,12 @@ export default function TeamView({ room }: { room: Room }) {
       )}
 
       <View className="flex-row justify-between">
-        <Text className="font-semibold text-gray-600">12 members</Text>
-        <Text className="font-semibold text-gray-600">John Smith's room</Text>
+        <Text className="font-semibold text-gray-600">
+          {room.numberMember} members
+        </Text>
+        <Text className="font-semibold text-gray-600">
+          {room.leader}'s room
+        </Text>
       </View>
       <TouchableOpacity
         onPress={() => {

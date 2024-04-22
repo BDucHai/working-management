@@ -39,7 +39,7 @@ export default function UserInfor({ user }: { user: User | null }) {
                 <Text className="text-gray-500">{infor.content}</Text>
               </View>
               <View className="flex-1">
-                <Text>vdat1608@gmail.com</Text>
+                <Text>{user?.email}</Text>
               </View>
             </View>
           ))}

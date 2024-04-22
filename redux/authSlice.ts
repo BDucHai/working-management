@@ -23,7 +23,12 @@ const initialState: Auth = {
 };
 export const signUp = createAsyncThunk(
   "auth/signup",
-  async (data: { name: string; email: string; password: string }) => {
+  async (data: {
+    name: string;
+    email: string;
+    password: string;
+    position: string;
+  }) => {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/auth/signup`,
