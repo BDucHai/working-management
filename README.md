@@ -18,7 +18,6 @@
 
 ### After pull
 
-> npm install
-> npx expo start -c
+> npm install && npx expo start -c
 
 ### Commit

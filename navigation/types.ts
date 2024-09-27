@@ -2,13 +2,15 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import {
   CompositeScreenProps,
   NavigatorScreenParams,
+  RouteProp,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Room } from "../types/room.type";
 
 export type UserStackParamList = {
   Todo: undefined;
   Login: undefined;
-  Signup: undefined
+  Signup: undefined;
   UserProfile: undefined;
 };
 
@@ -19,8 +21,8 @@ export type ProjectStackParamList = {
 };
 
 export type MeetingStackParamList = {
-  ListMeeting: undefined
-  Chat: undefined;
+  ListMeeting: undefined;
+  Chat: { room: Room };
   Video: undefined;
 };
 
@@ -30,7 +32,8 @@ export type RootStackParamList = {
   Project: NavigatorScreenParams<ProjectStackParamList>;
   Meeting: NavigatorScreenParams<MeetingStackParamList>;
 };
-
+export type MeetingProp = NativeStackScreenProps<MeetingStackParamList>;
+export type ChatScreenRouteProp = RouteProp<MeetingStackParamList, "Chat">;
 export type Root = CompositeScreenProps<
   BottomTabScreenProps<RootStackParamList>,
   CompositeScreenProps<

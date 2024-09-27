@@ -1,4 +1,7 @@
-export interface User{
-    name: string| undefined
-    image: string | undefined
+export interface User {
+  id: number | undefined;
+  name: string | undefined;
+  image?: string | undefined;
+  email: string | undefined;
+  position: string | undefined;
 }

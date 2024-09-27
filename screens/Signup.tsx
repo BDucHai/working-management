@@ -1,17 +1,35 @@
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Root } from "../navigation/types";
 import InputFeild from "../components/input";
+import { useDispatch, useSelector } from "react-redux";
+import { selectError, selectIsLoading, signUp } from "../redux/authSlice";
+import { AppDispatch } from "../redux/store";
+import Toast from "react-native-toast-message";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { Keyboard } from "react-native";
+import Loading from "../components/globalLoading";
 
 interface Data {
   name: string;
   email: string;
   password: string;
   passwordConfirm: string;
-  role: string;
+  position: string;
 }
 export default function SignupPage({ navigation }: Root) {
+  const dispatch: AppDispatch = useDispatch();
+  const isError = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
+
   const {
     control,
     handleSubmit,
@@ -22,15 +40,27 @@ export default function SignupPage({ navigation }: Root) {
       email: "",
       password: "",
       name: "",
-      birth: "",
+      position: "",
       passwordConfirm: "",
-      role: "guest",
     },
   });
-  const onSubmit = (data: Data) => {
-    console.log(data);
-    navigation.navigate("Home");
+  const onSubmit = async (data: Data) => {
+    Keyboard.dismiss();
+    const { email, name, password, position } = data;
+    const infor = await dispatch(signUp({ name, email, password, position }));
+    const res = unwrapResult(infor);
+    Toast.show({
+      type: `${res.message ? "error" : "success"}`,
+      text1: `${res.message ? res.message : "Sign up successfully"}`,
+      visibilityTime: 2000,
+      position: "top",
+      topOffset: 0,
+    });
+    setTimeout(() => {
+      if (!res.message) navigation.navigate("Login");
+    }, 2000);
   };
+  if (isLoading) return <Loading />;
   return (
     <View className="flex flex-1 flex-col justify-center px-6 py-12 bg-white">
       <View className="self-center mb-5 space-y-5">
@@ -60,13 +90,13 @@ export default function SignupPage({ navigation }: Root) {
           <View className="flex-1">
             <InputFeild
               control={control}
-              name="birth"
-              placeholder="dd/mm/yyyy"
-              title="Date of Birth"
+              name="position"
+              placeholder="Dev,BA,.."
+              title="Position"
             />
-            {errors.birth && (
+            {errors.position && (
               <Text className="text-red-600 mt-2">
-                Please provide your infor
+                Please provide your position
               </Text>
             )}
           </View>
@@ -141,15 +171,13 @@ export default function SignupPage({ navigation }: Root) {
         <View className="mt-6 flex items-center space-y-5 ">
           <TouchableOpacity
             className="w-full rounded-lg bg-primary flex justify-center items-center px-4 py-4"
-            onPress={handleSubmit(onSubmit)}
-          >
+            onPress={handleSubmit(onSubmit)}>
             <Text className="text-white text-base font-semibold">Sign-up</Text>
           </TouchableOpacity>
           <View className="flex flex-row gap-x-2">
             <Text>You already have account?</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate("User", { screen: "Login" })}
-            >
+              onPress={() => navigation.navigate("User", { screen: "Login" })}>
               <Text className="text-primary">Login now </Text>
             </TouchableOpacity>
           </View>

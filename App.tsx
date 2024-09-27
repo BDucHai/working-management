@@ -1,26 +1,45 @@
 // You can import Ionicons from @expo/vector-icons/Ionicons if you use Expo or
 // react-native-vector-icons/Ionicons otherwise.
-import { AntDesign, Entypo, Feather, MaterialIcons } from "@expo/vector-icons";
-import HomePage from "./screens/HomePage";
-import UserPage from "./screens/User";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import LoginPage from "./screens/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {
-    MeetingStackParamList,
-    ProjectStackParamList,
-    RootStackParamList,
-    UserStackParamList,
-} from "./navigation/types";
-import SignupPage from "./screens/Signup";
 
+import HomePage from "./screens/HomePage";
+import UserPage from "./screens/User";
+import LoginPage from "./screens/Login";
+import SignupPage from "./screens/Signup";
 import ProjectPage from "./screens/ProjectPage";
 import DetailProjectPage from "./screens/DetailProjectPage";
 import ChatPage from "./screens/Chat";
 import MeetingPage from "./screens/Meeting";
 import AddProject from "./screens/AddProject";
+
+import {
+  MeetingStackParamList,
+  ProjectStackParamList,
+  RootStackParamList,
+  UserStackParamList,
+} from "./navigation/types";
+import VideoCallPage from "./screens/VideoCall";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "./redux/authSlice";
+import { AppDispatch, RootState } from "./redux/store";
+import {
+  connectSocket,
+  disConnectSocket,
+  receiveSocket,
+  resetAceptMessage,
+  resetInformMessage,
+  resetRefuseMessage,
+  selectAceptMessage,
+  selectInformMessage,
+  selectRefuseMessage,
+} from "./redux/socketSlice";
+import Toast from "react-native-toast-message";
 
 // export props to use in page
 // export type Props = BottomTabScreenProps<RootStackParamList>;
@@ -33,69 +52,206 @@ const ProjectTab = createNativeStackNavigator<ProjectStackParamList>();
 const MeetingTab = createNativeStackNavigator<MeetingStackParamList>();
 
 function User() {
-    return (
-        <UserTab.Navigator screenOptions={{ headerShown: false }} initialRouteName={false ? "Login" : "UserProfile"}>
-            <UserTab.Screen name="UserProfile" component={UserPage} options={{ headerShown: false }} />
-            <UserTab.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
-            <UserTab.Screen name="Signup" component={SignupPage} options={{ headerShown: false }} />
-        </UserTab.Navigator>
-    );
+  const user = useSelector(selectCurrentUser);
+  return (
+    <UserTab.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName={user ? "UserProfile" : "Login"}>
+      {user ? (
+        <UserTab.Screen
+          name="UserProfile"
+          component={UserPage}
+          options={{ headerShown: false }}
+        />
+      ) : (
+        <>
+          <UserTab.Screen
+            name="Login"
+            component={LoginPage}
+            options={{ headerShown: false }}
+          />
+          <UserTab.Screen
+            name="Signup"
+            component={SignupPage}
+            options={{ headerShown: false }}
+          />
+        </>
+      )}
+    </UserTab.Navigator>
+  );
 }
 
 function Project() {
-    return (
-        <ProjectTab.Navigator initialRouteName="List">
-            <ProjectTab.Screen name="List" component={ProjectPage} options={{ headerShown: false }} />
-            <ProjectTab.Screen
-                name="DetailProjectPage"
-                component={DetailProjectPage}
-                options={{ headerShown: false }}
-            />
-            <ProjectTab.Screen name="AddProject" component={AddProject} options={{ headerShown: false }} />
-        </ProjectTab.Navigator>
-    );
+  return (
+    <ProjectTab.Navigator initialRouteName="List">
+      <ProjectTab.Screen
+        name="List"
+        component={ProjectPage}
+        options={{ headerShown: false }}
+      />
+      <ProjectTab.Screen
+        name="DetailProjectPage"
+        component={DetailProjectPage}
+        options={{ headerShown: false }}
+      />
+      <ProjectTab.Screen
+        name="AddProject"
+        component={AddProject}
+        options={{ headerShown: false }}
+      />
+    </ProjectTab.Navigator>
+  );
 }
 function Meeting() {
-    return (
-        <MeetingTab.Navigator initialRouteName="ListMeeting" screenOptions={{ headerShown: false }}>
-            <MeetingTab.Screen name="ListMeeting" component={MeetingPage} />
-            <MeetingTab.Screen name="Chat" component={ChatPage} />
-            <MeetingTab.Screen name="Video" component={MeetingPage} />
-        </MeetingTab.Navigator>
-    );
+  return (
+    <MeetingTab.Navigator
+      initialRouteName="ListMeeting"
+      screenOptions={{ headerShown: false }}>
+      <MeetingTab.Screen name="ListMeeting" component={MeetingPage} />
+      <MeetingTab.Screen name="Chat" component={ChatPage} />
+      <MeetingTab.Screen name="Video" component={VideoCallPage} />
+    </MeetingTab.Navigator>
+  );
 }
 export default function App() {
-    return (
-        <NavigationContainer>
-            <Tab.Navigator
-                initialRouteName="Home"
-                screenOptions={({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        switch (route.name) {
-                            case "Home":
-                                return <Feather name="home" size={24} color={focused ? "#3D5CFF" : "black"} />;
+  const dispatch: AppDispatch = useDispatch();
+  const isLogin = useSelector((state: RootState) => state.auth.isLogin);
+  const refuseMessage = useSelector(selectRefuseMessage);
+  const aceptMessage = useSelector(selectAceptMessage);
+  const { content, from, room } = useSelector(selectInformMessage);
 
-                            case "User":
-                                return <Feather name="user" size={24} color={focused ? "#3D5CFF" : "black"} />;
+  useEffect(() => {
+    const boostrapAsync = async () => {
+      try {
+        const accessToken = (await AsyncStorage.getItem("AccessToken")) || "";
+        if (isLogin) {
+          dispatch(connectSocket(accessToken));
+          dispatch(receiveSocket({ event: "invitation", type: "inform" }));
+          dispatch(receiveSocket({ event: "refuse", type: "refuseMessage" }));
+          dispatch(receiveSocket({ event: "acept", type: "aceptMessage" }));
+          dispatch(receiveSocket({ event: "message", type: "informMessage" }));
+        }
+      } catch {}
+    };
+    boostrapAsync();
+    return () => {
+      dispatch(disConnectSocket());
+    };
+  }, [dispatch, isLogin]);
+  useEffect(() => {
+    if (refuseMessage) {
+      Toast.show({
+        type: "info",
+        text1: refuseMessage,
+        visibilityTime: 2000,
+        position: "top",
+        topOffset: 0,
+      });
+      dispatch(resetRefuseMessage());
+    }
+    if (aceptMessage) {
+      Toast.show({
+        type: "info",
+        text1: aceptMessage,
 
-                            case "Project":
-                                return <Feather name="book" size={24} color={focused ? "#3D5CFF" : "black"} />;
+        visibilityTime: 2000,
+        position: "top",
+        topOffset: 0,
+      });
+      dispatch(resetAceptMessage());
+    }
+    if (content) {
+      Toast.show({
+        type: "info",
+        text1: `${from} send to ${room} `,
+        text2: content,
+        visibilityTime: 2000,
+        position: "top",
+        topOffset: 0,
+      });
+      dispatch(resetInformMessage());
+    }
+  }, [refuseMessage, aceptMessage, content]);
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            switch (route.name) {
+              case "Home":
+                return (
+                  <Feather
+                    name="home"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
+                );
 
-                            case "Meeting":
-                                return <AntDesign name="videocamera" size={24} color={focused ? "#3D5CFF" : "black"} />;
+              case "User":
+                return (
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
+                );
+              case "User":
+                return (
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
+                );
 
-                            default:
-                                return;
-                        }
-                    },
-                    tabBarActiveTintColor: "#3D5CFF",
-                    tabBarInactiveTintColor: "gray",
-                })}>
-                <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
-                <Tab.Screen name="Project" component={Project} options={{ headerShown: false }} />
-                <Tab.Screen name="Meeting" component={Meeting} options={{ headerShown: false }} />
-                <Tab.Screen name="User" component={User} options={{ headerShown: false }} />
-            </Tab.Navigator>
-        </NavigationContainer>
-    );
+              case "Project":
+                return (
+                  <Feather
+                    name="book"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
+                );
+              case "Project":
+                return (
+                  <Feather
+                    name="book"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
+                );
+
+              case "Meeting":
+                return (
+                  <AntDesign
+                    name="videocamera"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
+                );
+              case "Meeting":
+                return (
+                  <AntDesign
+                    name="videocamera"
+                    size={24}
+                    color={focused ? "#3D5CFF" : "black"}
+                  />
+                );
+
+              default:
+                return;
+            }
+          },
+          tabBarActiveTintColor: "#3D5CFF",
+          tabBarInactiveTintColor: "gray",
+          headerShown: false,
+        })}>
+        <Tab.Screen name="Home" component={HomePage} />
+        <Tab.Screen name="Project" component={Project} />
+        {isLogin && <Tab.Screen name="Meeting" component={Meeting} />}
+        <Tab.Screen name="User" component={User} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
 }
